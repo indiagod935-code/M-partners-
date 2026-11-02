@@ -1,0 +1,6 @@
+{
+  "name": "M-PARTNER",
+  "description": "Your Needs. Your Trusted Partner. Powered by Mãrçò 💯. Subscription-based local shopping and delivery assistance connecting customers with designated local Runners.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
