@@ -3,40 +3,14 @@ import { createServer as createViteServer } from 'vite';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import authRouter from './server/routes/auth.ts';
-import customerRouter from './server/routes/customer.ts';
-import runnerRouter from './server/routes/runner.ts';
-import adminRouter from './server/routes/admin.ts';
-import chatRouter from './server/routes/chat.ts';
-import publicRouter from './server/routes/public.ts';
+import { createApiApp } from './server/app.ts';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 async function startServer() {
-  const app = express();
+  const app = createApiApp();
   const PORT = Number(process.env.PORT) || 3000;
-
-  app.use(express.json({ limit: '10mb' }));
-  app.use(express.urlencoded({ extended: true, limit: '10mb' }));
-
-  // RESTful API endpoints under /api/v1/
-  app.use('/api/v1/auth', authRouter);
-  app.use('/api/v1/customer', customerRouter);
-  app.use('/api/v1/runner', runnerRouter);
-  app.use('/api/v1/admin', adminRouter);
-  app.use('/api/v1/chat', chatRouter);
-  app.use('/api/v1/public', publicRouter);
-
-  // Health check
-  app.get('/api/health', (_req, res) => {
-    res.json({
-      status: 'healthy',
-      platform: 'M-PARTNER',
-      brand: 'Powered by Mãrçò 💯',
-      timestamp: new Date().toISOString(),
-    });
-  });
 
   // Vite integration
   if (process.env.NODE_ENV === 'production') {
