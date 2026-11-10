@@ -65,8 +65,8 @@ export const AdminDashboard: React.FC = () => {
 
   // New service area form
   const [newAreaName, setNewAreaName] = useState('');
-  const [newAreaCity, setNewAreaCity] = useState('Bengaluru');
-  const [newAreaPincode, setNewAreaPincode] = useState('');
+  const [newAreaCity, setNewAreaCity] = useState('Ambarnath');
+  const [newAreaPincode, setNewAreaPincode] = useState('421501');
 
   const headers = {
     'Content-Type': 'application/json',
@@ -343,6 +343,52 @@ export const AdminDashboard: React.FC = () => {
         await fetchCustomers();
         await fetchRunners();
         await fetchLogs();
+      }
+    } catch (err: any) {
+      setActionMessage({ type: 'error', text: err.message });
+    }
+  };
+
+  // Suspend or Activate user
+  const handleToggleUserStatus = async (userId: string, currentStatus: string) => {
+    const newStatus = currentStatus === 'active' ? 'suspended' : 'active';
+    const reason = prompt(`Enter reason for ${newStatus === 'suspended' ? 'suspending' : 'activating'} user:`) || 'Administrative decision';
+    try {
+      const res = await fetch(`/api/v1/admin/users/${userId}/status`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ status: newStatus, reason }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionMessage({ type: 'success', text: data.message });
+        await fetchCustomers();
+        await fetchRunners();
+        await fetchLogs();
+      } else {
+        setActionMessage({ type: 'error', text: data.error });
+      }
+    } catch (err: any) {
+      setActionMessage({ type: 'error', text: err.message });
+    }
+  };
+
+  // Change user role
+  const handleChangeUserRole = async (userId: string, newRole: string) => {
+    try {
+      const res = await fetch(`/api/v1/admin/users/${userId}/change-role`, {
+        method: 'POST',
+        headers,
+        body: JSON.stringify({ newRole }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setActionMessage({ type: 'success', text: data.message });
+        await fetchCustomers();
+        await fetchRunners();
+        await fetchLogs();
+      } else {
+        setActionMessage({ type: 'error', text: data.error });
       }
     } catch (err: any) {
       setActionMessage({ type: 'error', text: err.message });
@@ -873,6 +919,11 @@ export const AdminDashboard: React.FC = () => {
                       }`}>
                         {r.isApproved ? 'Approved' : 'Pending Approval'}
                       </span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        r.status === 'suspended' ? 'bg-rose-100 text-rose-800' : 'bg-neutral-100 text-neutral-700'
+                      }`}>
+                        {r.status || 'active'}
+                      </span>
                       <span className="text-[10px] text-neutral-500 font-semibold">• Zone: {r.serviceArea}</span>
                     </div>
                     <p className="text-neutral-600">
@@ -883,15 +934,37 @@ export const AdminDashboard: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-2">
+                  <div className="flex flex-wrap items-center gap-2">
                     {!r.isApproved && (
                       <button
                         onClick={() => handleApproveRunner(r.id)}
-                        className="px-4 py-2 rounded-xl bg-black text-white text-xs font-bold hover:bg-neutral-800 cursor-pointer"
+                        className="px-3 py-1.5 rounded-xl bg-black text-white text-xs font-bold hover:bg-neutral-800 cursor-pointer"
                       >
                         Approve Application
                       </button>
                     )}
+
+                    <button
+                      onClick={() => handleToggleUserStatus(r.id, r.status || 'active')}
+                      className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border ${
+                        r.status === 'suspended' 
+                          ? 'bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100' 
+                          : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
+                      }`}
+                    >
+                      {r.status === 'suspended' ? 'Reactivate Account' : 'Suspend Account'}
+                    </button>
+
+                    <select
+                      value="runner"
+                      onChange={(e) => handleChangeUserRole(r.id, e.target.value)}
+                      className="px-2.5 py-1.5 rounded-xl border border-neutral-300 text-xs font-medium bg-white"
+                      title="Change user role"
+                    >
+                      <option value="runner">Role: Runner</option>
+                      <option value="customer">Change to Customer</option>
+                      <option value="admin">Promote to Admin</option>
+                    </select>
                   </div>
                 </div>
               ))}
@@ -915,6 +988,11 @@ export const AdminDashboard: React.FC = () => {
                   <div className="space-y-1 text-xs">
                     <div className="flex items-center gap-2">
                       <span className="font-bold text-sm text-neutral-900">{c.name}</span>
+                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold uppercase ${
+                        c.status === 'suspended' ? 'bg-rose-100 text-rose-800' : 'bg-neutral-100 text-neutral-700'
+                      }`}>
+                        {c.status || 'active'}
+                      </span>
                       <span className="text-[11px] text-neutral-500 font-semibold">• Locality: {c.locality}</span>
                     </div>
                     <p className="text-neutral-600">
@@ -925,7 +1003,7 @@ export const AdminDashboard: React.FC = () => {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3">
+                  <div className="flex flex-wrap items-center gap-3">
                     <div className="text-right text-xs">
                       <label className="block text-[10px] uppercase font-bold text-neutral-400 mb-0.5">Designated Runner</label>
                       <select
@@ -939,6 +1017,30 @@ export const AdminDashboard: React.FC = () => {
                             {r.name} ({r.serviceArea})
                           </option>
                         ))}
+                      </select>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-3 sm:pt-0">
+                      <button
+                        onClick={() => handleToggleUserStatus(c.id, c.status || 'active')}
+                        className={`px-3 py-1.5 rounded-xl text-xs font-bold transition cursor-pointer border ${
+                          c.status === 'suspended' 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-300 hover:bg-emerald-100' 
+                            : 'bg-rose-50 text-rose-700 border-rose-200 hover:bg-rose-100'
+                        }`}
+                      >
+                        {c.status === 'suspended' ? 'Reactivate' : 'Suspend'}
+                      </button>
+
+                      <select
+                        value="customer"
+                        onChange={(e) => handleChangeUserRole(c.id, e.target.value)}
+                        className="px-2.5 py-1.5 rounded-xl border border-neutral-300 text-xs font-medium bg-white"
+                        title="Change user role"
+                      >
+                        <option value="customer">Role: Customer</option>
+                        <option value="runner">Change to Runner</option>
+                        <option value="admin">Promote to Admin</option>
                       </select>
                     </div>
                   </div>

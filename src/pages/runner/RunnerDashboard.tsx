@@ -359,7 +359,7 @@ export const RunnerDashboard: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-neutral-500 mt-0.5">
-                Indiranagar Zone • Vehicle: {overview?.runner?.profile?.vehicleType || 'Electric Scooter'} • Rating: ★ {overview?.runner?.profile?.rating || '4.95'}
+                Khuntavli, Ambarnath Zone • Vehicle: {overview?.runner?.profile?.vehicleType || 'Two Wheeler'} • Rating: ★ {overview?.runner?.profile?.rating || '4.95'}
               </p>
             </div>
           </div>

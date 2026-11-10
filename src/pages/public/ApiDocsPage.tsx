@@ -26,7 +26,7 @@ export const ApiDocsPage: React.FC = () => {
           method: 'POST',
           path: '/api/v1/auth/register/customer',
           desc: 'Register a new customer account with delivery address and locality.',
-          body: '{\n  "name": "Aarav Sharma",\n  "phone": "+91 98765 22222",\n  "password": "securePassword",\n  "address": "Flat 402, Oakwood Heights",\n  "locality": "Indiranagar",\n  "serviceAreaId": "area_1"\n}',
+          body: '{\n  "name": "Aarav Sharma",\n  "phone": "+91 88288 22222",\n  "password": "securePassword",\n  "address": "Flat 204, Shree Sai Heights",\n  "locality": "Khuntavli",\n  "serviceAreaId": "area_1"\n}',
           response: '{\n  "token": "usr_cust_123",\n  "user": { "id": "usr_cust_123", "role": "customer", "status": "active" }\n}',
         },
         {
@@ -52,7 +52,7 @@ export const ApiDocsPage: React.FC = () => {
           method: 'POST',
           path: '/api/v1/customer/orders/create',
           desc: 'Place a custom multi-item order. Requires an active subscription with > 0 credits.',
-          body: '{\n  "items": [\n    { "name": "Tata Salt", "quantity": 1, "unit": "kg" },\n    { "name": "Fortune Oil", "quantity": 1, "unit": "litre" }\n  ],\n  "deliveryAddress": "Flat 402, Oakwood Heights, Indiranagar",\n  "preferredDeliveryTime": "Today within 2 hours"\n}',
+          body: '{\n  "items": [\n    { "name": "Tata Salt", "quantity": 1, "unit": "kg" },\n    { "name": "Fortune Oil", "quantity": 1, "unit": "litre" }\n  ],\n  "deliveryAddress": "Flat 204, Shree Sai Heights, Khuntavli, Ambarnath",\n  "preferredDeliveryTime": "Today within 2 hours"\n}',
           response: '{\n  "message": "Order #MP-1004 placed successfully!",\n  "order": { "id": "ord_1004", "deliveryOtp": "4829", "status": "runner_assigned" }\n}',
         },
         {

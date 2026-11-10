@@ -5,6 +5,7 @@ import runnerRouter from './routes/runner.ts';
 import adminRouter from './routes/admin.ts';
 import chatRouter from './routes/chat.ts';
 import publicRouter from './routes/public.ts';
+import aiRouter from './routes/ai.ts';
 
 export function createApiApp() {
   const app = express();
@@ -18,6 +19,7 @@ export function createApiApp() {
   app.use('/api/v1/admin', adminRouter);
   app.use('/api/v1/chat', chatRouter);
   app.use('/api/v1/public', publicRouter);
+  app.use('/api/v1/ai', aiRouter);
 
   // Health check
   app.get('/api/health', (_req, res) => {
@@ -25,6 +27,18 @@ export function createApiApp() {
       status: 'healthy',
       platform: 'M-PARTNER',
       brand: 'Powered by Mãrçò 💯',
+      timestamp: new Date().toISOString(),
+    });
+  });
+
+  // Global Backend Error Handler
+  app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
+    console.error('[Global Server Error Interceptor]:', err);
+    const status = typeof err.status === 'number' ? err.status : 500;
+    res.status(status).json({
+      success: false,
+      error: err.message || 'An unexpected server error occurred',
+      code: err.code || 'SERVER_ERROR',
       timestamp: new Date().toISOString(),
     });
   });

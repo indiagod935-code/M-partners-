@@ -11,8 +11,8 @@ interface LoginPageProps {
 export const LoginPage: React.FC<LoginPageProps> = ({ setCurrentTab, defaultRole = 'customer' }) => {
   const { login, switchDemo } = useAuth();
   const [role, setRole] = useState<UserRole>(defaultRole);
-  const [email, setEmail] = useState('aarav.sharma@gmail.com');
-  const [password, setPassword] = useState('customer123');
+  const [email, setEmail] = useState('indiagod935@gmail.com');
+  const [password, setPassword] = useState('admin123');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -20,13 +20,13 @@ export const LoginPage: React.FC<LoginPageProps> = ({ setCurrentTab, defaultRole
     setRole(newRole);
     setError(null);
     if (newRole === 'customer') {
-      setEmail('aarav.sharma@gmail.com');
+      setEmail('customer.aarav@gmail.com');
       setPassword('customer123');
     } else if (newRole === 'runner') {
       setEmail('rohan.runner@mpartner.com');
       setPassword('runner123');
     } else if (newRole === 'admin') {
-      setEmail('admin@mpartner.com');
+      setEmail('indiagod935@gmail.com');
       setPassword('admin123');
     }
   };

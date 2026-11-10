@@ -178,4 +178,18 @@ router.post('/report', (req: Request, res: Response) => {
   });
 });
 
+// GET /admin/all-messages - Admin surveillance of chat
+router.get('/admin/all-messages', (req: Request, res: Response) => {
+  const user = authenticateUser(req);
+  if (!user || user.role !== 'admin') {
+    return res.status(403).json({ error: 'Administrative authorization required' });
+  }
+
+  const messages = db.get('messages')
+    .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+    .slice(0, 100);
+
+  return res.json({ messages });
+});
+
 export default router;

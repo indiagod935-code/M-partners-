@@ -31,15 +31,15 @@ export const Footer: React.FC<FooterProps> = ({ setCurrentTab, openLegalModal })
             <div className="pt-2 flex flex-col space-y-2 text-xs text-neutral-400">
               <div className="flex items-center gap-2">
                 <MapPin className="w-3.5 h-3.5 text-neutral-500" />
-                <span>Indiranagar Hub, Bengaluru, Karnataka</span>
+                <span>Khuntavli, Ambarnath (West), Maharashtra 421501</span>
               </div>
               <div className="flex items-center gap-2">
                 <Phone className="w-3.5 h-3.5 text-neutral-500" />
-                <span>+91 80 4920 8000</span>
+                <span>+91 88288 22808</span>
               </div>
               <div className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-neutral-500" />
-                <span>support@mpartner.marcohun.com</span>
+                <span>indiagod935@gmail.com</span>
               </div>
             </div>
           </div>

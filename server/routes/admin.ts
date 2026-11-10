@@ -245,6 +245,137 @@ router.post('/customers/:id/assign-runner', (req: Request, res: Response) => {
   });
 });
 
+// GET /users - List all users across all roles
+router.get('/users', (req: Request, res: Response) => {
+  const users = db.get('users');
+  const safeUsers = users.map(u => ({
+    id: u.id,
+    name: u.name,
+    role: u.role,
+    phone: u.phone,
+    email: u.email,
+    address: u.address,
+    locality: u.locality,
+    status: u.status,
+    createdAt: u.createdAt,
+    assignedRunnerId: u.assignedRunnerId,
+  }));
+  return res.json({ users: safeUsers });
+});
+
+// POST /users/:id/status - Suspend or activate a user account
+router.post('/users/:id/status', (req: Request, res: Response) => {
+  const admin = (req as any).user;
+  const { id } = req.params;
+  const { status, reason } = req.body;
+
+  if (!['active', 'suspended'].includes(status)) {
+    return res.status(400).json({ error: 'Status must be active or suspended' });
+  }
+
+  const users = db.get('users');
+  const user = users.find(u => u.id === id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  if (user.id === admin.id) {
+    return res.status(400).json({ error: 'Admin cannot suspend their own account' });
+  }
+
+  user.status = status;
+  db.set('users', users);
+
+  const action = status === 'suspended' ? 'SUSPEND_USER' : 'ACTIVATE_USER';
+  db.addAuditLog(
+    admin.id,
+    admin.name,
+    'admin',
+    action,
+    user.role,
+    user.id,
+    `${action}: ${user.name} (${user.role}). Reason: ${reason || 'Administrative action'}`
+  );
+
+  return res.json({
+    message: `User ${user.name} has been set to ${status}.`,
+    user: { id: user.id, name: user.name, status: user.status }
+  });
+});
+
+// POST /users/:id/change-role - Change a user's role (customer, runner, admin)
+router.post('/users/:id/change-role', (req: Request, res: Response) => {
+  const admin = (req as any).user;
+  const { id } = req.params;
+  const { newRole } = req.body;
+
+  if (!['customer', 'runner', 'admin'].includes(newRole)) {
+    return res.status(400).json({ error: 'Invalid role. Must be customer, runner, or admin.' });
+  }
+
+  const users = db.get('users');
+  const user = users.find(u => u.id === id);
+  if (!user) return res.status(404).json({ error: 'User not found' });
+
+  if (user.id === admin.id && newRole !== 'admin') {
+    return res.status(400).json({ error: 'Cannot demote the currently active administrator account.' });
+  }
+
+  const oldRole = user.role;
+  user.role = newRole;
+  db.set('users', users);
+
+  // If newly runner, ensure profile exists
+  if (newRole === 'runner') {
+    const profiles = db.get('runnerProfiles');
+    let profile = profiles.find(p => p.userId === user.id);
+    if (!profile) {
+      profile = {
+        id: `prof_${Date.now()}`,
+        userId: user.id,
+        serviceAreaId: user.serviceAreaId || 'area_1',
+        languages: ['Hindi', 'Marathi', 'English'],
+        isApproved: true,
+        isAvailable: true,
+        activeOrderCount: 0,
+        rating: 5.0,
+        vehicleType: 'Two Wheeler',
+        upiId: '8828822808@okaxis',
+      };
+      profiles.push(profile);
+      db.set('runnerProfiles', profiles);
+    }
+  }
+
+  // If newly customer, ensure wallet exists
+  if (newRole === 'customer') {
+    const wallets = db.get('wallets');
+    let wallet = wallets.find(w => w.userId === user.id);
+    if (!wallet) {
+      wallets.push({
+        id: `wal_${Date.now()}`,
+        userId: user.id,
+        balance: 0,
+        updatedAt: new Date().toISOString(),
+      });
+      db.set('wallets', wallets);
+    }
+  }
+
+  db.addAuditLog(
+    admin.id,
+    admin.name,
+    'admin',
+    'CHANGE_USER_ROLE',
+    newRole,
+    user.id,
+    `Changed role of ${user.name} from ${oldRole} to ${newRole}`
+  );
+
+  return res.json({
+    message: `Role of ${user.name} changed from ${oldRole} to ${newRole}.`,
+    user: { id: user.id, name: user.name, role: user.role }
+  });
+});
+
 // GET /subscriptions - List pending & all subscriptions
 router.get('/subscriptions', (req: Request, res: Response) => {
   const subscriptions = db.get('userSubscriptions');

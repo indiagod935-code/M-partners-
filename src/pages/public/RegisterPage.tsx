@@ -21,14 +21,15 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ setCurrentTab, initi
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [address, setAddress] = useState('');
   const [building, setBuilding] = useState('');
   const [locality, setLocality] = useState('');
   const [landmark, setLandmark] = useState('');
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState('Hindi, Marathi');
   const [serviceAreaId, setServiceAreaId] = useState('area_1');
   const [vehicleType, setVehicleType] = useState('Two Wheeler (Scooter/Bike)');
-  const [languagesSpoken, setLanguagesSpoken] = useState('English, Kannada, Hindi');
+  const [languagesSpoken, setLanguagesSpoken] = useState('Hindi, Marathi, English');
   const [consent, setConsent] = useState(false);
 
   useEffect(() => {
@@ -56,6 +57,14 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ setCurrentTab, initi
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match! Please make sure both password fields are identical.');
+      return;
+    }
     if (!consent) {
       setError('Please agree to the Terms of Service & Privacy Policy to proceed.');
       return;
@@ -204,17 +213,18 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ setCurrentTab, initi
               </div>
             </div>
 
+            <div>
+              <label className="block font-bold text-neutral-700 mb-1">Email Address (Optional)</label>
+              <input
+                type="email"
+                placeholder="e.g. user@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+              />
+            </div>
+
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label className="block font-bold text-neutral-700 mb-1">Email (Optional)</label>
-                <input
-                  type="email"
-                  placeholder="e.g. user@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:ring-2 focus:ring-black"
-                />
-              </div>
               <div>
                 <label className="block font-bold text-neutral-700 mb-1">Set Password *</label>
                 <input
@@ -224,6 +234,28 @@ export const RegisterPage: React.FC<RegisterPageProps> = ({ setCurrentTab, initi
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3.5 py-2.5 rounded-xl border border-neutral-300 text-sm focus:outline-none focus:ring-2 focus:ring-black"
+                />
+              </div>
+              <div>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block font-bold text-neutral-700">Confirm Password *</label>
+                  {confirmPassword && (
+                    <span className={`text-[10px] font-bold ${password === confirmPassword ? 'text-emerald-600' : 'text-rose-600'}`}>
+                      {password === confirmPassword ? '✓ Passwords match' : '✗ Do not match'}
+                    </span>
+                  )}
+                </div>
+                <input
+                  type="password"
+                  required
+                  placeholder="Re-enter password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className={`w-full px-3.5 py-2.5 rounded-xl border text-sm focus:outline-none focus:ring-2 ${
+                    confirmPassword && password !== confirmPassword 
+                      ? 'border-rose-400 focus:ring-rose-200' 
+                      : 'border-neutral-300 focus:ring-black'
+                  }`}
                 />
               </div>
             </div>

@@ -91,8 +91,8 @@ export const ContactPage: React.FC<ContactPageProps> = ({ setCurrentTab }) => {
                 <div className="flex items-start gap-3">
                   <Phone className="w-4 h-4 text-neutral-400 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-neutral-400 text-[10px] uppercase font-bold">Helpline</p>
-                    <p className="font-semibold text-white">{settings?.supportPhone || '+91 80 4920 8000'}</p>
+                    <p className="text-neutral-400 text-[10px] uppercase font-bold">Helpline & WhatsApp</p>
+                    <p className="font-semibold text-white">{settings?.supportPhone || '+91 88288 22808'}</p>
                     <p className="text-[11px] text-neutral-400">8:00 AM – 9:00 PM IST</p>
                   </div>
                 </div>
@@ -101,15 +101,15 @@ export const ContactPage: React.FC<ContactPageProps> = ({ setCurrentTab }) => {
                   <Mail className="w-4 h-4 text-neutral-400 mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="text-neutral-400 text-[10px] uppercase font-bold">Email Support</p>
-                    <p className="font-semibold text-white">{settings?.supportEmail || 'support@mpartner.marcohun.com'}</p>
+                    <p className="font-semibold text-white">{settings?.supportEmail || 'indiagod935@gmail.com'}</p>
                   </div>
                 </div>
 
                 <div className="flex items-start gap-3">
                   <MapPin className="w-4 h-4 text-neutral-400 mt-0.5 flex-shrink-0" />
                   <div>
-                    <p className="text-neutral-400 text-[10px] uppercase font-bold">Primary Hub</p>
-                    <p className="text-neutral-200">Indiranagar 100 Feet Road, Bengaluru, Karnataka 560038</p>
+                    <p className="text-neutral-400 text-[10px] uppercase font-bold">Primary Operations Hub</p>
+                    <p className="text-neutral-200">Khuntavli, Ambarnath (West), Maharashtra 421501</p>
                   </div>
                 </div>
               </div>

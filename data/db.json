@@ -1,0 +1,529 @@
+{
+  "users": [
+    {
+      "id": "usr_admin_1",
+      "role": "admin",
+      "name": "M-PARTNER Operations Admin",
+      "phone": "+91 88288 22808",
+      "email": "indiagod935@gmail.com",
+      "passwordHash": "240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9",
+      "address": "Khuntavli, Ambarnath (West), Maharashtra 421501",
+      "locality": "Khuntavli",
+      "language": "Hindi, Marathi, English",
+      "status": "active",
+      "createdAt": "2026-10-01T08:00:00.000Z"
+    },
+    {
+      "id": "usr_runner_1",
+      "role": "runner",
+      "name": "Rohan Verma",
+      "phone": "+91 88288 11111",
+      "email": "rohan.runner@mpartner.com",
+      "passwordHash": "bc23f6de6fa51bd27289f0fbda179d2ca91006c2163d0e5958b398b5bb34058c",
+      "address": "Near Station Road, Kansai Section, Ambarnath West, Maharashtra 421501",
+      "locality": "Khuntavli",
+      "language": "Hindi, Marathi, English",
+      "status": "active",
+      "serviceAreaId": "area_1",
+      "createdAt": "2026-10-05T09:30:00.000Z"
+    },
+    {
+      "id": "usr_customer_1",
+      "role": "customer",
+      "name": "Aarav Sharma",
+      "phone": "+91 88288 22222",
+      "email": "customer.aarav@gmail.com",
+      "passwordHash": "b041c0aeb35bb0fa4aa668ca5a920b590196fdaf9a00eb852c9b7f4d123cc6d6",
+      "address": "Flat 204, Shree Sai Heights, Khuntavli, Ambarnath (West), Maharashtra 421501",
+      "building": "Shree Sai Heights",
+      "locality": "Khuntavli",
+      "landmark": "Near Khuntavli Lake",
+      "language": "Hindi, Marathi, English",
+      "status": "active",
+      "assignedRunnerId": "usr_runner_1",
+      "serviceAreaId": "area_1",
+      "createdAt": "2026-10-10T10:00:00.000Z"
+    },
+    {
+      "id": "usr_customer_2",
+      "role": "customer",
+      "name": "Priya Sundaram",
+      "phone": "+91 88288 33333",
+      "email": "priya.s@gmail.com",
+      "passwordHash": "b041c0aeb35bb0fa4aa668ca5a920b590196fdaf9a00eb852c9b7f4d123cc6d6",
+      "address": "Bungalow 12, Shiv Mandir Road, Ambarnath (East), Maharashtra 421505",
+      "building": "Shiv Mandir Residency",
+      "locality": "Shiv Mandir Area",
+      "landmark": "Near Ancient Shiv Temple",
+      "language": "Hindi, Marathi, English",
+      "status": "active",
+      "serviceAreaId": "area_4",
+      "createdAt": "2026-10-20T11:15:00.000Z"
+    }
+  ],
+  "runnerProfiles": [
+    {
+      "id": "prof_runner_1",
+      "userId": "usr_runner_1",
+      "serviceAreaId": "area_1",
+      "languages": [
+        "English",
+        "Hindi",
+        "Kannada"
+      ],
+      "isApproved": true,
+      "isAvailable": true,
+      "activeOrderCount": 1,
+      "rating": 4.95,
+      "vehicleType": "Electric Scooter",
+      "upiId": "rohan.verma@okaxis"
+    }
+  ],
+  "serviceAreas": [
+    {
+      "id": "area_1",
+      "name": "Khuntavli",
+      "city": "Ambarnath (West)",
+      "isActive": true,
+      "pincode": "421501"
+    },
+    {
+      "id": "area_2",
+      "name": "Ambarnath East (Station & Morivali)",
+      "city": "Ambarnath (East)",
+      "isActive": true,
+      "pincode": "421501"
+    },
+    {
+      "id": "area_3",
+      "name": "Kansai Section & Shivaji Chowk",
+      "city": "Ambarnath (West)",
+      "isActive": true,
+      "pincode": "421501"
+    },
+    {
+      "id": "area_4",
+      "name": "Shiv Mandir & MIDC Area",
+      "city": "Ambarnath (East)",
+      "isActive": true,
+      "pincode": "421505"
+    },
+    {
+      "id": "area_5",
+      "name": "Ulhasnagar & Badlapur Link",
+      "city": "Thane District",
+      "isActive": true,
+      "pincode": "421004"
+    }
+  ],
+  "subscriptionPlans": [
+    {
+      "id": "plan_starter",
+      "name": "Starter",
+      "price": 200,
+      "credits": 20,
+      "validityDays": 30,
+      "isActive": true,
+      "description": "20 completed deliveries allowance (₹10/delivery)"
+    },
+    {
+      "id": "plan_standard",
+      "name": "Standard",
+      "price": 400,
+      "credits": 40,
+      "validityDays": 30,
+      "isActive": true,
+      "description": "40 completed deliveries allowance (₹10/delivery)"
+    },
+    {
+      "id": "plan_plus",
+      "name": "Plus",
+      "price": 600,
+      "credits": 60,
+      "validityDays": 30,
+      "isActive": true,
+      "description": "60 completed deliveries allowance (₹10/delivery)"
+    },
+    {
+      "id": "plan_premium",
+      "name": "Premium",
+      "price": 800,
+      "credits": 80,
+      "validityDays": 30,
+      "isActive": true,
+      "description": "80 completed deliveries allowance (₹10/delivery)"
+    },
+    {
+      "id": "plan_pro",
+      "name": "Pro",
+      "price": 1000,
+      "credits": 100,
+      "validityDays": 30,
+      "isActive": true,
+      "description": "100 completed deliveries allowance (₹10/delivery)"
+    }
+  ],
+  "userSubscriptions": [
+    {
+      "id": "sub_cust_1",
+      "userId": "usr_customer_1",
+      "planId": "plan_starter",
+      "planName": "Starter",
+      "status": "active",
+      "creditsTotal": 20,
+      "creditsRemaining": 17,
+      "startDate": "2026-10-15T10:00:00.000Z",
+      "expiresAt": "2026-11-14T10:00:00.000Z",
+      "paymentRef": "UPI-SUB-89421",
+      "verifiedAt": "2026-10-15T10:05:00.000Z"
+    }
+  ],
+  "subscriptionLedger": [
+    {
+      "id": "sledg_1",
+      "userId": "usr_customer_1",
+      "subscriptionId": "sub_cust_1",
+      "changeAmount": 20,
+      "reason": "Starter Subscription plan activated (20 credits valid 30 days)",
+      "createdAt": "2026-10-15T10:05:00.000Z"
+    },
+    {
+      "id": "sledg_2",
+      "userId": "usr_customer_1",
+      "subscriptionId": "sub_cust_1",
+      "orderId": "ord_sample_prev_1",
+      "changeAmount": -1,
+      "reason": "Credit consumed for completed delivery order #MP-1001",
+      "createdAt": "2026-10-18T14:30:00.000Z"
+    },
+    {
+      "id": "sledg_3",
+      "userId": "usr_customer_1",
+      "subscriptionId": "sub_cust_1",
+      "orderId": "ord_sample_prev_2",
+      "changeAmount": -1,
+      "reason": "Credit consumed for completed delivery order #MP-1002",
+      "createdAt": "2026-10-22T17:10:00.000Z"
+    },
+    {
+      "id": "sledg_4",
+      "userId": "usr_customer_1",
+      "subscriptionId": "sub_cust_1",
+      "orderId": "ord_sample_prev_3",
+      "changeAmount": -1,
+      "reason": "Credit consumed for completed delivery order #MP-1003",
+      "createdAt": "2026-10-28T12:45:00.000Z"
+    }
+  ],
+  "wallets": [
+    {
+      "id": "wal_1",
+      "userId": "usr_customer_1",
+      "balance": 1450,
+      "updatedAt": "2026-10-28T12:45:00.000Z"
+    },
+    {
+      "id": "wal_2",
+      "userId": "usr_customer_2",
+      "balance": 500,
+      "updatedAt": "2026-10-20T11:15:00.000Z"
+    }
+  ],
+  "walletLedger": [
+    {
+      "id": "wledg_1",
+      "walletId": "wal_1",
+      "userId": "usr_customer_1",
+      "type": "credit",
+      "amount": 2000,
+      "rechargeRequestId": "rech_1",
+      "status": "approved",
+      "notes": "Initial wallet recharge verified by Admin",
+      "createdAt": "2026-10-15T10:10:00.000Z"
+    },
+    {
+      "id": "wledg_2",
+      "walletId": "wal_1",
+      "userId": "usr_customer_1",
+      "type": "debit",
+      "amount": 230,
+      "orderId": "ord_sample_prev_1",
+      "status": "approved",
+      "notes": "Product cost debit for order #MP-1001 (Groceries)",
+      "createdAt": "2026-10-18T14:30:00.000Z"
+    },
+    {
+      "id": "wledg_3",
+      "walletId": "wal_1",
+      "userId": "usr_customer_1",
+      "type": "debit",
+      "amount": 180,
+      "orderId": "ord_sample_prev_2",
+      "status": "approved",
+      "notes": "Product cost debit for order #MP-1002 (Dairy & Snacks)",
+      "createdAt": "2026-10-22T17:10:00.000Z"
+    },
+    {
+      "id": "wledg_4",
+      "walletId": "wal_1",
+      "userId": "usr_customer_1",
+      "type": "debit",
+      "amount": 140,
+      "orderId": "ord_sample_prev_3",
+      "status": "approved",
+      "notes": "Product cost debit for order #MP-1003 (Fruits)",
+      "createdAt": "2026-10-28T12:45:00.000Z"
+    }
+  ],
+  "rechargeRequests": [
+    {
+      "id": "rech_1",
+      "userId": "usr_customer_1",
+      "userName": "Aarav Sharma",
+      "amount": 2000,
+      "paymentReference": "UPI-TXN-77889922",
+      "paymentMethod": "UPI / PhonePe",
+      "status": "approved",
+      "reviewedBy": "usr_admin_1",
+      "reviewedAt": "2026-10-15T10:10:00.000Z",
+      "adminNote": "Funds received in primary account",
+      "createdAt": "2026-10-15T10:08:00.000Z"
+    }
+  ],
+  "orders": [
+    {
+      "id": "ord_live_1004",
+      "orderNumber": "MP-1004",
+      "customerId": "usr_customer_1",
+      "customerName": "Aarav Sharma",
+      "customerPhone": "+91 88288 22222",
+      "deliveryAddress": "Flat 204, Shree Sai Heights, Khuntavli, Ambarnath (West)",
+      "runnerId": "usr_runner_1",
+      "runnerName": "Rohan Verma",
+      "runnerPhone": "+91 88288 11111",
+      "items": [
+        {
+          "id": "itm_1",
+          "name": "Tata Salt Crystal",
+          "quantity": 1,
+          "unit": "kg",
+          "brandPreference": "Tata Salt",
+          "unitPrice": 28,
+          "estimatedPrice": 28,
+          "confirmedPrice": 28,
+          "isAvailable": true
+        },
+        {
+          "id": "itm_2",
+          "name": "Fortune Sunlite Sunflower Oil",
+          "quantity": 1,
+          "unit": "litre",
+          "brandPreference": "Fortune",
+          "unitPrice": 145,
+          "estimatedPrice": 145,
+          "confirmedPrice": 145,
+          "isAvailable": true
+        },
+        {
+          "id": "itm_3",
+          "name": "Fresh Robusta Bananas",
+          "quantity": 12,
+          "unit": "pieces",
+          "notes": "Medium ripe, not over-ripened",
+          "unitPrice": 6,
+          "estimatedPrice": 72,
+          "confirmedPrice": 72,
+          "isAvailable": true
+        },
+        {
+          "id": "itm_4",
+          "name": "Kashmir Royal Gala Apples",
+          "quantity": 500,
+          "unit": "g",
+          "notes": "Crisp and fresh",
+          "unitPrice": 90,
+          "estimatedPrice": 90,
+          "confirmedPrice": 90,
+          "isAvailable": true
+        },
+        {
+          "id": "itm_5",
+          "name": "Dettol Original Soap",
+          "quantity": 1,
+          "unit": "piece",
+          "brandPreference": "Reckitt",
+          "unitPrice": 48,
+          "estimatedPrice": 48,
+          "confirmedPrice": 48,
+          "isAvailable": true
+        }
+      ],
+      "status": "shopping_in_progress",
+      "notes": "Please check expiry dates carefully. Call if brand unavailable.",
+      "preferredDeliveryTime": "Today by 4:00 PM",
+      "totalEstimatedPrice": 383,
+      "totalActualPrice": 383,
+      "shopName": "Shree Ganesh General Store, Station Road, Ambarnath West",
+      "shopPaymentMethod": "UPI to Shop QR",
+      "deliveryOtp": "4829",
+      "creditDeducted": false,
+      "walletDebited": false,
+      "createdAt": "2026-11-02T06:15:00.000Z",
+      "updatedAt": "2026-11-02T06:45:00.000Z"
+    }
+  ],
+  "messages": [
+    {
+      "id": "msg_1",
+      "orderId": "ord_live_1004",
+      "senderId": "usr_customer_1",
+      "senderName": "Aarav Sharma",
+      "senderRole": "customer",
+      "text": "Hi Rohan! I placed order MP-1004. Please check if they have the 1L pouch for Fortune Oil.",
+      "createdAt": "2026-11-02T06:20:00.000Z"
+    },
+    {
+      "id": "msg_2",
+      "orderId": "ord_live_1004",
+      "senderId": "usr_runner_1",
+      "senderName": "Rohan Verma",
+      "senderRole": "runner",
+      "text": "Hello Aarav! Yes, I am at Sri Venkateshwara Provision Stores now. They have the 1L pouch for ₹145 and fresh Kashmir apples at ₹90/500g.",
+      "createdAt": "2026-11-02T06:30:00.000Z"
+    },
+    {
+      "id": "msg_3",
+      "orderId": "ord_live_1004",
+      "senderId": "usr_runner_1",
+      "senderName": "Rohan Verma",
+      "senderRole": "runner",
+      "text": "Total verified bill is ₹393. I have updated the price breakdown for your confirmation.",
+      "createdAt": "2026-11-02T06:35:00.000Z"
+    },
+    {
+      "id": "msg_4",
+      "orderId": "usr_customer_1",
+      "senderId": "usr_customer_1",
+      "senderName": "Aarav Sharma",
+      "senderRole": "customer",
+      "text": "Perfect! Price confirmed. Please go ahead with the purchase.",
+      "createdAt": "2026-11-02T06:40:00.000Z"
+    }
+  ],
+  "notifications": [
+    {
+      "id": "notif_1",
+      "userId": "usr_customer_1",
+      "type": "order_status",
+      "title": "Order MP-1004 In Progress",
+      "message": "Your designated Runner Rohan Verma is currently shopping at Sri Venkateshwara Provision Stores.",
+      "link": "/orders",
+      "isRead": false,
+      "createdAt": "2026-11-02T06:30:00.000Z"
+    },
+    {
+      "id": "notif_2",
+      "userId": "usr_customer_1",
+      "type": "subscription_activated",
+      "title": "Starter Plan Active",
+      "message": "Your Starter subscription is active with 17 credits remaining valid until 14 Nov 2026.",
+      "link": "/subscription",
+      "isRead": true,
+      "createdAt": "2026-10-15T10:05:00.000Z"
+    }
+  ],
+  "contentReports": [],
+  "moderationLogs": [],
+  "supportTickets": [
+    {
+      "id": "tkt_1",
+      "userId": "usr_customer_1",
+      "userName": "Aarav Sharma",
+      "userEmail": "aarav.sharma@gmail.com",
+      "userRole": "customer",
+      "category": "general",
+      "subject": "Question on service hours on public holidays",
+      "message": "Are Runners available during festival holidays in Khuntavli, Ambarnath area?",
+      "status": "resolved",
+      "adminNotes": "Informed customer that service runs 7 days a week, 8 AM - 9 PM.",
+      "createdAt": "2026-10-25T14:00:00.000Z",
+      "updatedAt": "2026-10-25T16:30:00.000Z"
+    }
+  ],
+  "auditLogs": [
+    {
+      "id": "aud_1",
+      "actorId": "usr_admin_1",
+      "actorName": "M-PARTNER Operations Admin",
+      "actorRole": "admin",
+      "action": "APPROVE_RUNNER",
+      "entityType": "runner",
+      "entityId": "usr_runner_1",
+      "details": "Approved runner Rohan Verma for Khuntavli, Ambarnath zone",
+      "createdAt": "2026-10-05T09:35:00.000Z"
+    },
+    {
+      "id": "aud_2",
+      "actorId": "usr_admin_1",
+      "actorName": "M-PARTNER Operations Admin",
+      "actorRole": "admin",
+      "action": "ASSIGN_RUNNER_TO_CUSTOMER",
+      "entityType": "customer",
+      "entityId": "usr_customer_1",
+      "details": "Assigned designated runner Rohan Verma to Aarav Sharma",
+      "createdAt": "2026-10-10T10:05:00.000Z"
+    },
+    {
+      "id": "aud_3",
+      "actorId": "usr_admin_1",
+      "actorName": "M-PARTNER Operations Admin",
+      "actorRole": "admin",
+      "action": "VERIFY_SUBSCRIPTION",
+      "entityType": "subscription",
+      "entityId": "sub_cust_1",
+      "details": "Verified Starter plan for Aarav Sharma (+20 credits)",
+      "createdAt": "2026-10-15T10:05:00.000Z"
+    },
+    {
+      "id": "aud_4",
+      "actorId": "usr_admin_1",
+      "actorName": "M-PARTNER Operations Admin",
+      "actorRole": "admin",
+      "action": "APPROVE_WALLET_RECHARGE",
+      "entityType": "wallet",
+      "entityId": "wal_1",
+      "details": "Approved recharge of ₹2000 for Aarav Sharma (Ref: UPI-TXN-77889922)",
+      "createdAt": "2026-10-15T10:10:00.000Z"
+    }
+  ],
+  "settings": {
+    "platformName": "M-PARTNER",
+    "parentBrand": "Mãrçò 💯",
+    "brandingText": "Powered by Mãrçò 💯",
+    "primaryTagline": "Your Needs. Your Trusted Partner.",
+    "upiId": "8828822808@okaxis",
+    "supportPhone": "+91 88288 22808",
+    "supportEmail": "indiagod935@gmail.com",
+    "allowMultiRunnerSelection": false,
+    "requireDeliveryOtp": true,
+    "runnerCommissionPerDelivery": 35,
+    "lowBalanceThreshold": 100,
+    "lowCreditsThreshold": 3,
+    "subscriptionWarningDays": 3,
+    "enableAutoDebitOnComplete": true,
+    "chatModerationEnabled": true,
+    "maintenanceMode": false,
+    "bannedKeywords": [
+      "abuse",
+      "offensive",
+      "scam",
+      "porn",
+      "nude",
+      "sexual",
+      "hate",
+      "slur",
+      "threat",
+      "violence"
+    ]
+  }
+}

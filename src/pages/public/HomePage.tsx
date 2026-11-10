@@ -116,7 +116,7 @@ export const HomePage: React.FC<HomePageProps> = ({ setCurrentTab, openLegalModa
             <form onSubmit={checkAvailability} className="flex gap-2">
               <input
                 type="text"
-                placeholder="Enter area (e.g. Indiranagar, Koramangala, 560038)"
+                placeholder="Enter area (e.g. Khuntavli, Ambarnath West, 421501)"
                 value={searchArea}
                 onChange={(e) => setSearchArea(e.target.value)}
                 className="flex-1 px-4 py-2.5 text-sm bg-white border border-neutral-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-black"

@@ -25,7 +25,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ setCurrentTab }) => 
     {
       step: '02',
       title: 'Designated Runner assigned',
-      desc: 'Based on your service area (e.g. Indiranagar, Koramangala), our platform designates an authorized local Runner.',
+      desc: 'Based on your service area (e.g. Khuntavli, Ambarnath West), our platform designates an authorized local Runner.',
     },
     {
       step: '03',
@@ -124,7 +124,7 @@ export const HowItWorksPage: React.FC<HowItWorksProps> = ({ setCurrentTab }) => 
         <div className="p-8 rounded-3xl bg-neutral-900 text-white text-center space-y-4">
           <h3 className="text-2xl font-bold">Ready to Experience Personal Local Shopping?</h3>
           <p className="text-xs text-neutral-400 max-w-md mx-auto">
-            Sign up today, choose your Starter plan, and connect with your local Runner in Indiranagar, Koramangala, and surrounding hubs.
+            Sign up today, choose your Starter plan, and connect with your local Runner in Khuntavli, Ambarnath, and surrounding hubs.
           </p>
           <div className="pt-2">
             <button

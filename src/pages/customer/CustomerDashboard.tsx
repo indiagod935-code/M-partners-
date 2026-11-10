@@ -29,12 +29,15 @@ import {
   Phone,
   ArrowUpRight,
   RefreshCw,
-  ExternalLink
+  ExternalLink,
+  Sparkles
 } from 'lucide-react';
+import { AiShoppingAssistant } from '../../components/AiShoppingAssistant';
 
 export const CustomerDashboard: React.FC = () => {
   const { user, token, refreshUser } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'new-order' | 'orders' | 'wallet' | 'subscription' | 'chat' | 'support'>('overview');
+  const [aiModalOpen, setAiModalOpen] = useState(false);
 
   // Data states
   const [loading, setLoading] = useState(true);
@@ -420,7 +423,7 @@ export const CustomerDashboard: React.FC = () => {
                 </span>
               </div>
               <p className="text-xs text-neutral-500 mt-0.5">
-                {user?.locality || 'Indiranagar'}, Bengaluru • Member of <strong className="text-neutral-800">M-PARTNER</strong> (Powered by Mãrçò 💯)
+                {user?.locality || 'Khuntavli'}, Ambarnath (West), Maharashtra • Member of <strong className="text-neutral-800">M-PARTNER</strong> (Powered by Mãrçò 💯)
               </p>
             </div>
           </div>
@@ -524,29 +527,39 @@ export const CustomerDashboard: React.FC = () => {
           </div>
         )}
 
-        {/* Portal Sub-Navigation Tabs */}
-        <div className="flex flex-wrap items-center gap-2 border-b border-neutral-200 pb-2">
-          {[
-            { id: 'overview', label: 'Overview & Active Orders' },
-            { id: 'new-order', label: '+ Place New Order' },
-            { id: 'orders', label: 'All Orders' },
-            { id: 'wallet', label: 'My Wallet & Receipts' },
-            { id: 'subscription', label: 'Subscription & Credits' },
-            { id: 'chat', label: 'Runner Chat' },
-            { id: 'support', label: 'Help & Tickets' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
-              className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
-                activeTab === tab.id
-                  ? 'bg-black text-white shadow-xs'
-                  : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-100 border border-neutral-200'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+          {/* Portal Sub-Navigation Tabs */}
+        <div className="flex flex-wrap items-center justify-between gap-2 border-b border-neutral-200 pb-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {[
+              { id: 'overview', label: 'Overview & Active Orders' },
+              { id: 'new-order', label: '+ Place New Order' },
+              { id: 'orders', label: 'All Orders' },
+              { id: 'wallet', label: 'My Wallet & Receipts' },
+              { id: 'subscription', label: 'Subscription & Credits' },
+              { id: 'chat', label: 'Runner Chat' },
+              { id: 'support', label: 'Help & Tickets' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`px-4 py-2 rounded-xl text-xs font-bold transition cursor-pointer ${
+                  activeTab === tab.id
+                    ? 'bg-black text-white shadow-xs'
+                    : 'bg-white text-neutral-600 hover:text-black hover:bg-neutral-100 border border-neutral-200'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <button
+            onClick={() => setAiModalOpen(true)}
+            className="px-3.5 py-2 rounded-xl text-xs font-bold transition cursor-pointer bg-neutral-900 hover:bg-neutral-800 text-white shadow-xs flex items-center gap-1.5"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-400" />
+            <span>AI Smart Assistant</span>
+          </button>
         </div>
 
         {/* Tab 1: Overview */}
@@ -677,7 +690,7 @@ export const CustomerDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h5 className="font-bold text-sm text-black">{overview?.assignedRunner?.name || 'Rohan Verma'}</h5>
-                    <p className="text-[11px] text-neutral-500">Zone: Indiranagar Hub</p>
+                    <p className="text-[11px] text-neutral-500">Zone: Khuntavli, Ambarnath Hub</p>
                     <p className="text-[10px] text-emerald-600 font-semibold">Rating: ★ 4.95 (Verified Partner)</p>
                   </div>
                 </div>
@@ -1045,7 +1058,7 @@ export const CustomerDashboard: React.FC = () => {
                 </div>
                 <div>
                   <p className="text-neutral-400 text-[10px] uppercase font-bold">Helpline</p>
-                  <p className="text-neutral-300">{walletData?.supportPhone || '+91 80 4920 8000'}</p>
+                  <p className="text-neutral-300">{walletData?.supportPhone || '+91 88288 22808'}</p>
                 </div>
               </div>
             </div>
@@ -1497,6 +1510,20 @@ export const CustomerDashboard: React.FC = () => {
           </div>
         </div>
       )}
+
+      {/* AI Smart Assistant Modal */}
+      <AiShoppingAssistant
+        isOpen={aiModalOpen}
+        onClose={() => setAiModalOpen(false)}
+        onApplyItems={(itemsText: string) => {
+          setDeliveryNotes((prev: string) => (prev ? `${prev}\n\n${itemsText}` : itemsText));
+          setActiveTab('new-order');
+          setActionMessage({
+            type: 'success',
+            text: 'AI shopping items applied to your new order request!',
+          });
+        }}
+      />
 
     </div>
   );
