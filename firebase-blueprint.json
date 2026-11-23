@@ -1,0 +1,119 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Authenticated household user profile persisted in Firestore",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the owner"
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Customer display name"
+        },
+        "email": {
+          "type": "string",
+          "description": "Verified account email"
+        },
+        "locality": {
+          "type": "string",
+          "description": "Neighborhood locality or zone"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer"],
+          "description": "User role fixed to customer on client creation"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": ["userId", "displayName", "role", "createdAt", "updatedAt"]
+    },
+    "DeliveryRequest": {
+      "title": "DeliveryRequest",
+      "description": "Customer neighborhood shopping and delivery request saved to Firestore",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "description": "Firebase Auth UID of the requesting customer"
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Display name of the requesting customer"
+        },
+        "customerEmail": {
+          "type": "string",
+          "description": "Optional customer contact email"
+        },
+        "itemsText": {
+          "type": "string",
+          "description": "Free-form or structured item list entered by the customer"
+        },
+        "deliveryAddress": {
+          "type": "string",
+          "description": "Neighborhood flat, society, or street address"
+        },
+        "preferredTime": {
+          "type": "string",
+          "description": "Requested delivery slot"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Brand preferences or runner instructions"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "order_placed",
+            "runner_assigned",
+            "shopping_in_progress",
+            "out_for_delivery",
+            "completed",
+            "cancelled"
+          ],
+          "description": "Current fulfillment lifecycle status"
+        },
+        "deliveryOtp": {
+          "type": "string",
+          "description": "4-digit delivery verification code"
+        },
+        "estimatedTotalInr": {
+          "type": "number",
+          "description": "Optional estimated bill amount in INR"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Server timestamp set via FieldValue.serverTimestamp()"
+        }
+      },
+      "required": ["userId", "customerName", "itemsText", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Per-user household profile document"
+    },
+    "/deliveryRequests/{requestId}": {
+      "schema": { "$ref": "#/entities/DeliveryRequest" },
+      "description": "Top-level customer delivery requests scoped by userId"
+    }
+  }
+}

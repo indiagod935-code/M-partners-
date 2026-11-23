@@ -1,0 +1,145 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Safety Net: Default deny all reads and writes
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // --- GLOBAL HARDENED HELPERS ---
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        exists(/databases/$(database)/documents/admins/$(request.auth.uid)) ||
+        (request.auth.token.email_verified == true && request.auth.token.email == 'rp2824173@gmail.com')
+      );
+    }
+
+    // --- VALIDATION BLUEPRINTS ---
+
+    function isValidUserProfile(data) {
+      return data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.displayName is string && data.displayName.size() >= 1 && data.displayName.size() <= 100 &&
+             data.role == 'customer' &&
+             (!('email' in data) || (data.email is string && data.email.size() <= 150)) &&
+             (!('locality' in data) || (data.locality is string && data.locality.size() <= 150)) &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    function isValidDeliveryRequest(data) {
+      return data.userId is string && data.userId.size() >= 1 && data.userId.size() <= 128 &&
+             data.customerName is string && data.customerName.size() >= 1 && data.customerName.size() <= 100 &&
+             data.itemsText is string && data.itemsText.size() >= 1 && data.itemsText.size() <= 2000 &&
+             data.status in ['order_placed', 'runner_assigned', 'shopping_in_progress', 'out_for_delivery', 'completed', 'cancelled'] &&
+             (!('customerEmail' in data) || (data.customerEmail is string && data.customerEmail.size() <= 150)) &&
+             (!('deliveryAddress' in data) || (data.deliveryAddress is string && data.deliveryAddress.size() <= 300)) &&
+             (!('preferredTime' in data) || (data.preferredTime is string && data.preferredTime.size() <= 100)) &&
+             (!('notes' in data) || (data.notes is string && data.notes.size() <= 500)) &&
+             (!('deliveryOtp' in data) || (data.deliveryOtp is string && data.deliveryOtp.size() == 4)) &&
+             (!('estimatedTotalInr' in data) || ((data.estimatedTotalInr is int || data.estimatedTotalInr is float) && data.estimatedTotalInr >= 0 && data.estimatedTotalInr <= 100000)) &&
+             data.createdAt is timestamp && data.createdAt <= request.time &&
+             data.updatedAt is timestamp && data.updatedAt <= request.time;
+    }
+
+    // --- COLLECTIONS ---
+
+    match /admins/{adminId} {
+      allow get: if isSignedIn() && isValidId(adminId) && request.auth.uid == adminId;
+      allow list, write: if false;
+    }
+
+    match /users/{userId} {
+      allow get: if isSignedIn() && isValidId(userId) && (isOwner(userId) || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+
+      allow create: if isSignedIn() &&
+                       isValidId(userId) &&
+                       isOwner(userId) &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().keys().hasAll(['userId', 'displayName', 'role', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly(['userId', 'displayName', 'email', 'locality', 'role', 'createdAt', 'updatedAt']) &&
+                       isValidUserProfile(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(userId) &&
+                       isValidUserProfile(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       incoming().role == existing().role &&
+                       (
+                         isAdmin() ||
+                         (
+                           isOwner(userId) &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'email', 'locality', 'updatedAt'])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidId(userId) && (isOwner(userId) || isAdmin());
+    }
+
+    match /deliveryRequests/{requestId} {
+      allow get: if isSignedIn() && isValidId(requestId) && (existing().userId == request.auth.uid || isAdmin());
+      allow list: if isSignedIn() && (resource.data.userId == request.auth.uid || isAdmin());
+
+      allow create: if isSignedIn() &&
+                       isValidId(requestId) &&
+                       incoming().userId == request.auth.uid &&
+                       incoming().status == 'order_placed' &&
+                       incoming().keys().hasAll(['userId', 'customerName', 'itemsText', 'status', 'createdAt', 'updatedAt']) &&
+                       incoming().keys().hasOnly([
+                         'userId', 'customerName', 'customerEmail', 'itemsText',
+                         'deliveryAddress', 'preferredTime', 'notes', 'status',
+                         'deliveryOtp', 'estimatedTotalInr', 'createdAt', 'updatedAt'
+                       ]) &&
+                       isValidDeliveryRequest(incoming());
+
+      allow update: if isSignedIn() &&
+                       isValidId(requestId) &&
+                       isValidDeliveryRequest(incoming()) &&
+                       incoming().userId == existing().userId &&
+                       incoming().createdAt == existing().createdAt &&
+                       (
+                         isAdmin() ||
+                         (
+                           existing().userId == request.auth.uid &&
+                           existing().status != 'completed' &&
+                           existing().status != 'cancelled' &&
+                           incoming().status == 'cancelled' &&
+                           incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt'])
+                         ) ||
+                         (
+                           existing().userId == request.auth.uid &&
+                           existing().status == 'order_placed' &&
+                           incoming().status == 'order_placed' &&
+                           incoming().diff(existing()).affectedKeys().hasOnly([
+                             'itemsText', 'deliveryAddress', 'preferredTime', 'notes', 'estimatedTotalInr', 'updatedAt'
+                           ])
+                         )
+                       );
+
+      allow delete: if isSignedIn() && isValidId(requestId) && (existing().userId == request.auth.uid || isAdmin());
+    }
+  }
+}

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">M-PARTNER</string>
+    <string name="brand_powered_by">Powered by Mãrçò 💯</string>
+    <string name="brand_tagline">Your Needs. Your Trusted Partner.</string>
+    <string name="ai_assistant_title">M-PARTNER AI Suite</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_plans">Plans</string>
+    <string name="nav_how_it_works">How It Works</string>
+    <string name="nav_faq">FAQ</string>
+    <string name="nav_portal">Portal</string>
+    <string name="action_sign_in">Sign In</string>
+    <string name="action_sign_out">Sign Out</string>
+    <string name="action_register">Register</string>
+    <string name="error_generic">Something went wrong. Please try again.</string>
+</resources>
